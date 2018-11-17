@@ -1,8 +1,8 @@
 var mysql = require('mysql')
 const db  = {
     host: "localhost",
-    user: "admin",
-    password: "admin4321",
+    user: "root",
+    password: "root",
     database: 'neuravision'
 }
 
@@ -11,3 +11,6 @@ con.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
 });
+
+
+module.exports = con

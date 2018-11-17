@@ -20,7 +20,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var uploadRuter = require('./routes/upload');
 var importData = require('./routes/importData');
-
+var datasetRouter  = require('./routes/datasetRouter')
 
 var app = express();
 
@@ -39,7 +39,7 @@ app.use('/', indexRouter);
 app.use('/import-data', importData);
 app.use('/users', usersRouter);
 app.use('/upload', uploadRuter);
-
+app.use('/dataset', datasetRouter)
 
 app.use(function(req, res, next){
   var err = new Error("kosong")

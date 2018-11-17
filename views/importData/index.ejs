@@ -178,14 +178,14 @@
             <h4 class="modal-title">Default Modal</h4>
           </div>
           <div class="modal-body">
-            <form action="/import-data/upload" method="post">
+            <form action="/import-data/upload"  enctype="multipart/form-data" method="post">
               <div class="form-group">
                 <label for="">Name</label>
                 <input type="text" name="nama" class="form-control">
               </div>
               <div class="form-group">
                 <label for="">image</label>
-                <input type="file" class="form-control" name="face_image">
+                <input type="file" class="form-control" name="image">
               </div>
           </div>
           <div class="modal-footer">
