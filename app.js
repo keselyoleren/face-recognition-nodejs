@@ -1,9 +1,28 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
+var fs = require('fs');
+var multer = require('multer');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var mysql = require('mysql')
+var mysql = require('mysql');
+var image = "";
+var db = require('./config/db')
+// console.log(db)
+
+var storage = multer.diskStorage({
+  destination: function(){
+    console.log("123")
+  }
+})
+
+var con = mysql.createConnection(db)
+con.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected!");
+});
+
+console.log(con)
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -47,7 +66,6 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 

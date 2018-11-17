@@ -13,78 +13,27 @@
     <div class="content-wrapper">
         <section class="content-header">
             <h1>
-                Dashboard
-                <small>Version 2.0</small>
+                Import Data
             </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li class="active">Dashboard</li>
+                <li class="active">Import Data</li>
             </ol>
         </section>
-        
-            <!-- Main content -->
+
         <section class="content">
-              <!-- Info boxes -->
-            <div class="row">
-                <div class="col-md-3 col-sm-6 col-xs-12">
-                  <div class="info-box">
-                    <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
-        
-                    <div class="info-box-content">
-                      <span class="info-box-text">CPU Traffic</span>
-                      <span class="info-box-number">90<small>%</small></span>
-                    </div>
-                    <!-- /.info-box-content -->
-                  </div>
-                  <!-- /.info-box -->
+              <div class="box">
+                <div class="box-header">
+                  <h3 class="box-title">Import Data Option</h3>
                 </div>
-                <!-- /.col -->
-                <div class="col-md-3 col-sm-6 col-xs-12">
-                  <div class="info-box">
-                    <span class="info-box-icon bg-red"><i class="fa fa-google-plus"></i></span>
-        
-                    <div class="info-box-content">
-                      <span class="info-box-text">Likes</span>
-                      <span class="info-box-number">41,410</span>
-                    </div>
-                    <!-- /.info-box-content -->
-                  </div>
-                  <!-- /.info-box -->
+                <div class="box-body">
+                  <p>
+                    <a href="#face" data-toggle="modal" class="btn bg-maroon btn-flat margin">Face Recognition</a>
+                    <a href="#counting" data-toggle="modal" class="btn bg-navy btn-flat margin">Object Counting</a>
+                    <a href="#object" data-toggle="modal" class="btn bg-olive btn-flat margin">Object Detection</a>
+                  </p>
                 </div>
-                <!-- /.col -->
-        
-                <!-- fix for small devices only -->
-                <div class="clearfix visible-sm-block"></div>
-        
-                <div class="col-md-3 col-sm-6 col-xs-12">
-                  <div class="info-box">
-                    <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
-        
-                    <div class="info-box-content">
-                      <span class="info-box-text">Sales</span>
-                      <span class="info-box-number">760</span>
-                    </div>
-                    <!-- /.info-box-content -->
-                  </div>
-                  <!-- /.info-box -->
-                </div>
-                <!-- /.col -->
-                <div class="col-md-3 col-sm-6 col-xs-12">
-                  <div class="info-box">
-                    <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
-        
-                    <div class="info-box-content">
-                      <span class="info-box-text">New Members</span>
-                      <span class="info-box-number">2,000</span>
-                    </div>
-                    <!-- /.info-box-content -->
-                  </div>
-                  <!-- /.info-box -->
-                </div>
-                <!-- /.col -->
-            </div>
-              <!-- /.row -->
-        
+              </div>
             <div class="row">
                 <div class="col-md-12">
                   <div class="box">
@@ -218,6 +167,74 @@
             </div>
         </section>
     </div>
+
+    <!-- modal -->
+    <div class="modal fade" id="face">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Default Modal</h4>
+          </div>
+          <div class="modal-body">
+            <form action="" method="post">
+              <div class="form-group">
+                <label for="">Name</label>
+                <input type="text" name="nama" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="">image</label>
+                <input type="file" class="form-control" name="face_image">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="counting">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Default Modal</h4>
+          </div>
+          <div class="modal-body">
+            <p>One fine body&hellip;</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="object">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Default Modal</h4>
+          </div>
+          <div class="modal-body">
+            <p>One fine body&hellip;</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
     <% include ../layout/footer %>
 
