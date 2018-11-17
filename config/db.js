@@ -1,11 +1,13 @@
 var mysql = require('mysql')
 const db  = {
     host: "localhost",
-    user: "root",
-    password: "root",
+    user: "admin",
+    password: "admin4321",
     database: 'neuravision'
 }
 
 var con = mysql.createConnection(db)
-
-module.exports = db;
+con.connect(function(err) {
+    if (err) throw err;
+    console.log("Connected!");
+});

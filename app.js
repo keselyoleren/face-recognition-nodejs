@@ -7,8 +7,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mysql = require('mysql');
 var image = "";
-var db = require('./config/db')
-// console.log(db)
+var con = require('./config/db')
 
 var storage = multer.diskStorage({
   destination: function(){
@@ -16,13 +15,6 @@ var storage = multer.diskStorage({
   }
 })
 
-var con = mysql.createConnection(db)
-con.connect(function(err) {
-  if (err) throw err;
-  console.log("Connected!");
-});
-
-console.log(con)
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -55,8 +47,8 @@ app.use(function(req, res, next){
   next(err)
 })
 
-app.get('/ejs', function(req, res) {
-  res.send('index');
+app.get('/html', function(req, res) {
+  res.render('index');
 });
 
 // // catch 404 and forward to error handler
