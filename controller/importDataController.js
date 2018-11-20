@@ -18,15 +18,10 @@ exports.index = function(req, res){
 
 exports.uploadFaceName = function(req, res, next){
     var nama = req.body.nama
-<<<<<<< HEAD
     var image = req.files.image
     var action = req.body.action
     console.log(image)
     var sql = "INSERT INTO 'face'('nama', 'action', 'image') VALUES ('"+nama+"', '"+action+"', '"+image+"')";
-=======
-    var ai = req.body.ai
-    var sql = "INSERT INTO `dataset`(`nama`,`ai`) VALUES ('"+nama+"','"+ai+"')";
->>>>>>> 6dbc14098cfc39236f9db709d47253ad4bf88a40
     con.query(sql, function(err, result){
         if(err)throw err;
         console.log("data saved")
