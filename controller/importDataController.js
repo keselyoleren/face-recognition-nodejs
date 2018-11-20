@@ -17,11 +17,11 @@ exports.index = function(req, res){
 }
 
 exports.uploadFaceName = function(req, res, next){
-    var nama = req.body.nama
-    var image = req.files.image
+    var dataset_name = req.body.dataset_name
+    // var image = req.files.image
     var action = req.body.action
-    console.log(image)
-    var sql = "INSERT INTO 'face'('nama', 'action', 'image') VALUES ('"+nama+"', '"+action+"', '"+image+"')";
+    var image = 'example.jpg'
+    var sql = "INSERT INTO `dataset`(`dataset_name`, `dataset_action`, `dataset_image_location`) VALUES ('"+dataset_name+"', '"+action+"', '"+image+"')";
     con.query(sql, function(err, result){
         if(err)throw err;
         console.log("data saved")

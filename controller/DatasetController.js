@@ -6,7 +6,7 @@ exports.index = function(req, res){
         if (err) {
             console.log("error", err);
         } else {
-            res.render("dataset/index", {dataset:result});
+            res.render("dataset/index", {data:result});
         }
     });
 }
