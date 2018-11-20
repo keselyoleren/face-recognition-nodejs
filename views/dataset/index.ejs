@@ -49,6 +49,36 @@
                     <!-- /.box-header -->
                     <div class="box-body no-padding">
 
+                        <% if (dataset.length > 0) {%>
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th style="width: 10px">#</th>
+                                <th>Dataset Name</th>
+                                <th>Used AI</th>
+                                <th>Action</th>
+                              </tr>
+                            </thead>
+                              <tbody>
+                                <% dataset.forEach(function (ds) { %>
+                                  <tr>
+                                    <td>1.</td>
+                                    <td><%= ds.nama %></td>
+                                    <td><%= ds.action %></td>
+                                    <td>
+                                      <div class="btn-group">
+                                          <button type="button" class="btn btn-danger">Delete</button>
+                                          <button type="button" class="btn btn-success">Train</button>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                <% }) %>
+                              </tbody>
+                            </table>
+                        <% } else { %>
+                            <p class="text-center">No Dataset found. Go <a href="/add" >here</a> to add Dataset.</p>
+                        <% } %>
+
                       
                         <table class="table">
                           <tbody>
