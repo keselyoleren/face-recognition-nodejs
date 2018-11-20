@@ -3,6 +3,7 @@
 <html>
 <head>
     <% include ../layout/header %>
+    <link rel="stylesheet" href="/datatable/css/main.css">
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -27,27 +28,11 @@
                 <div class="col-md-12">
                   <div class="box">
                     <div class="box-header with-border">
-                      <h3 class="box-title">Imported Dataset</h3>
-        
-                      <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                        </button>
-                        <div class="btn-group">
-                          <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-wrench"></i></button>
-                          <ul class="dropdown-menu" role="menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
-                          </ul>
-                        </div>
-                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                      </div>
+                      <h3 class="box-title">List Dataset</h3>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body no-padding">
+<<<<<<< HEAD
 
                         <% if (dataset.length > 0) {%>
                           <table class="table">
@@ -81,33 +66,33 @@
 
                       
                         <table class="table">
+=======
+                      <div class="box-body">
+                        <table id="example2" class="table table-bordered table-hover">
+                          <thead>
+                          <tr>
+                            <th>Datset name</th>
+                            <th>Used Ai</th>
+                            <th>Action</th>
+                          </tr>
+                          </thead>
+>>>>>>> 6dbc14098cfc39236f9db709d47253ad4bf88a40
                           <tbody>
-                            <tr>
-                              <th style="width: 10px">#</th>
-                              <th>Dataset Name</th>
-                              <th>Used AI</th>
-                              <th>Action</th>
-                            </tr>
-                            <tr>
-                              <td>1.</td>
-                              <td>Data wajah karyawan ...</td>
-                              <td>Face Recognition</td>
-                              <td>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-danger">Delete</button>
-                                    <button type="button" class="btn btn-success">Train</button>
-                                </div>
-                              </td>
-                            </tr>
+                            <% data.forEach(function(data){%>
+                              <tr>
+                                <td><%=data.nama %></td>
+                                <td><%=data.ai %></td>
+                                <td>
+                                  <a href="" class="btn btn-info btn-sm ">Train</a>
+                                  <a href="/dataset/delete/<%= data.id%>" class="btn btn-danger btn-sm ">Delete</a>
+                                </td>
+                              </tr>
+                            <%})%>
                           </tbody>
                         </table>
-      
-                    <!-- ./box-body -->
-                    
-                  </div>
-                  <!-- /.box -->
+                      </div>
+                    </div>
                 </div>
-                <!-- /.col -->
             </div>
         </section>
     </div>
@@ -179,11 +164,24 @@
       </div>
     </div>
 
-
     <% include ../layout/footer %>
-
 
 </div>
 <% include ../layout/js %>
+<script type="text/javascript" src="/datatable/js/main.js"></script>
+<script type="text/javascript" src="/datatable/js/bostrap.min.js"></script>
+<script>
+   $(function () {
+    // $('#example1').DataTable()
+    $('#example2').DataTable({
+      'paging'      : true,
+      'lengthChange': true,
+      'searching'   : true,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : true
+    })
+  })
+</script>
 </body>
 </html>
