@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var fs = require('fs');
 var multer = require('multer');
+var flash = require("connect-flash")
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mysql = require('mysql');
@@ -30,6 +31,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
+app.use(flash())
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
