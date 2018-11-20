@@ -1,0 +1,14 @@
+- create tabel dataset
+    record :
+        - id
+        - nama
+        - action
+        - lokasi penyimpanan gambar
+
+
+action :
+    - face-detection
+    - face-recognition
+    - object-detection
+    - object-counting
+

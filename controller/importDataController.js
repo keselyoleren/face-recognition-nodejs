@@ -14,8 +14,9 @@ exports.index = function(req, res){
 exports.upload = function(req, res, next){
     var nama = req.body.nama
     var image = req.files.image
+    var action = req.body.action
     console.log(image)
-    var sql = "INSERT INTO `face`(`nama`,`image`) VALUES ('"+nama+"','"+image+"')";
+    var sql = "INSERT INTO 'face'('nama', 'action', 'image') VALUES ('"+nama+"', '"+action+"', '"+image+"')";
     con.query(sql, function(err, result){
         if(err)throw err;
         console.log("data saved")
