@@ -1,0 +1,68 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../layout/header %>
+    <link rel="stylesheet" href="/datatable/css/main.css">
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+
+    <% include ../layout/nav %>
+    <% include ../layout/sidebar %>
+
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>
+                Dataset
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li class="active">Dataset</li>
+            </ol>
+        </section>
+
+        <section class="content">
+              
+            <div class="row">
+                <div class="col-md-12">
+                  <div class="box">
+                    <div class="box-header with-border">
+                      <h3 class="box-title">List Dataset</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body no-padding">
+                      <div class="box-body">
+                          
+                        <!-- content here -->
+
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- modal -->
+  
+    <% include ../layout/footer %>
+
+</div>
+<% include ../layout/js %>
+<script type="text/javascript" src="/datatable/js/main.js"></script>
+<script type="text/javascript" src="/datatable/js/bostrap.min.js"></script>
+<script>
+   $(function () {
+    // $('#example1').DataTable()
+    $('#example2').DataTable({
+      'paging'      : true,
+      'lengthChange': true,
+      'searching'   : true,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : true
+    })
+  })
+</script>
+</body>
+</html>
