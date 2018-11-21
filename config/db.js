@@ -2,7 +2,7 @@ var mysql = require('mysql');
 const db  = {
     host: "localhost",
     user: "root",
-    password: "",
+    password: "root",
     database: "neuravision"
 }
 
