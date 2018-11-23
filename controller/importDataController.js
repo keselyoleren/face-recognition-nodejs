@@ -40,7 +40,7 @@ exports.storeImage = function(req, res){
         var dataset_id = 1
         var file_path = file.path
         var file_name = file.name
-
+        console.log(file_name, file_path, dataset_id)
         var data = "INSERT INTO `image`(`dataset_id`,`file_path`, `file_name`) VALUES ('"+dataset_id+"','"+file_path+"','"+file_name+"')"; 
         
         con.query(data, function(err, res){
@@ -48,6 +48,7 @@ exports.storeImage = function(req, res){
             console.log("data saved")
         })
     })
+    res.render("back")
     return res.json(200, {result: 'upload succes'})
 }
 

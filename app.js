@@ -2,19 +2,11 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var fs = require('fs');
-var multer = require('multer');
-var flash = require("connect-flash")
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mysql = require('mysql');
-var image = "";
 var con = require('./config/db')
-
-var storage = multer.diskStorage({
-  destination: function(){
-    console.log("123")
-  }
-})
+const { get } = require('request')
 
 
 var indexRouter = require('./routes/index');
@@ -27,16 +19,20 @@ var trainRouter = require("./routes/trainRouter")
 var app = express();
 
 
-// view engine setup
+const viewsDir = path.join(__dirname, 'views')
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
-app.use(flash())
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'weights')));
+app.use(express.static(path.join(__dirname, 'public/images')))
+app.use(express.static(path.join(__dirname, 'public/media')))
+app.use(express.static(path.join(__dirname, 'public/weights')))
+
 
 app.use('/', indexRouter);
 app.use('/import-data', importData);
@@ -44,6 +40,21 @@ app.use('/users', usersRouter);
 app.use('/upload', uploadRuter);
 app.use('/dataset', datasetRouter)
 app.use('/train', trainRouter)
+
+app.get('/', (req, res) => res.redirect('/face_and_landmark_detection'))
+app.get('/face_and_landmark_detection', (req, res) => res.sendFile(path.join(viewsDir, '/home/faceAndLandmarkDetection.html')))
+app.get('/face_extraction', (req, res) => res.sendFile(path.join(viewsDir, '/home/faceExtraction.html')))
+app.get('/face_recognition', (req, res) => res.sendFile(path.join(viewsDir, '/home/faceRecognition.html')))
+app.get('/video_face_tracking', (req, res) => res.sendFile(path.join(viewsDir, '/home/videoFaceTracking.html')))
+app.get('/webcam_face_tracking', (req, res) => res.sendFile(path.join(viewsDir, '/home/webcamFaceTracking.html')))
+app.get('/bbt_face_landmark_detection', (req, res) => res.sendFile(path.join(viewsDir, '/home/bbtFaceLandmarkDetection.html')))
+app.get('/bbt_face_similarity', (req, res) => res.sendFile(path.join(viewsDir, '/home/bbtFaceSimilarity.html')))
+app.get('/bbt_face_matching', (req, res) => res.sendFile(path.join(viewsDir, '/home/bbtFaceMatching.html')))
+app.get('/bbt_face_recognition', (req, res) => res.sendFile(path.join(viewsDir, '/home/bbtFaceRecognition.html')))
+app.get('/batch_face_landmarks', (req, res) => res.sendFile(path.join(viewsDir, '/home/batchFaceLandmarks.html')))
+app.get('/batch_face_recognition', (req, res) => res.sendFile(path.join(viewsDir, '/home/batchFaceRecognition.html')))
+
+
 
 app.use(function(req, res, next){
   var err = new Error("kosong")
@@ -55,17 +66,13 @@ app.get('/html', function(req, res) {
   res.render('index');
 });
 
-// // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
 
-// error handler
 app.use(function(err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
   res.status(err.status || 500);
   res.render('error');
 });
