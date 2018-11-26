@@ -53,8 +53,7 @@ app.get('/bbt_face_matching', (req, res) => res.sendFile(path.join(viewsDir, '/h
 app.get('/bbt_face_recognition', (req, res) => res.sendFile(path.join(viewsDir, '/home/bbtFaceRecognition.html')))
 app.get('/batch_face_landmarks', (req, res) => res.sendFile(path.join(viewsDir, '/home/batchFaceLandmarks.html')))
 app.get('/batch_face_recognition', (req, res) => res.sendFile(path.join(viewsDir, '/home/batchFaceRecognition.html')))
-
-
+app.get('/get_image_from_camera', (req, res) => res.sendFile(path.join(viewsDir, '/train/get_image_from_camera.html')))
 
 app.use(function(req, res, next){
   var err = new Error("kosong")

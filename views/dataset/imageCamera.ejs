@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.css">
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+</head>
+<body>
+  <div id="navbar"></div>
+  <div class="center-content page-container">
+    <div class="progress" id="loader">
+      <div class="indeterminate"></div>
+    </div>
+  
+    <div class="center-content page-container">
+      <div class="col-md-6">
+          <div onload="init();" id="my_camera"></div>
+          <br>
+          <div onload="init();" id="results"></div>
+      </div>
+      <form action="/dataset/upload-from-camera" class="form-image-upload" method="POST" >
+          <input class="btn btn-info" type=button value="Capture" onClick="preview_snapshot()">
+          <div class="form-group" id="pre_take_buttons">
+              <br>
+              <br>
+              <input type="hidden" name="image" id="image" value="">
+              <input type="hidden" name="folder_id" value="<%= id %>">
+              <input type="hidden" name="folder_name" value="<%= nama %>">
+              <input type="text" class="form-control" name="image_name"  placeholder="Image Name">
+          </div>
+          <div class="form-group" id="post_take_buttons" style="display:none">
+              <input class="btn btn-info" type=button value="&lt; Take Another" onClick="cancel_preview()">
+              <input class="btn btn-success" type=button value="Save Photo &gt;" onClick="save_photo()" style="font-weight:bold;">
+          </div>
+          <input class="btn btn-success" type="submit" name="upload" value="save">
+      </form>
+    </div>
+  </div>
+
+  <script src="/dist/face-api.js"></script>
+  <script src="/js/commons.js"></script>
+  <script src="/js/drawing.js"></script>
+  <script src="/js/faceDetectionControls.js"></script>
+  <script src="/js/webcam.min.js"></script>
+  <script src="/js/setCam.js"></script>
+  <script>
+    $(document).ready(function() {
+      renderNavBar('#navbar', 'Get Image From Camera ')
+      initFaceDetectionControls()
+      run()
+    })
+  </script>
+</body>
+</html>

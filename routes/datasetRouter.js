@@ -5,4 +5,11 @@ var datasetController = require('../controller/DatasetController')
 
 router.get('/', datasetController.index);
 router.get('/delete/(:id)', datasetController.deleteDataset)
+router.post('/create-folder', datasetController.createFolder)
+router.get('/open-folder/(:id)', datasetController.getImgCamera)
+router.get('/imageCamera', function(req, res){
+    res.send("example")
+})
+router.post('/upload-from-camera', datasetController.uploadFromCamera)
+
 module.exports = router;
