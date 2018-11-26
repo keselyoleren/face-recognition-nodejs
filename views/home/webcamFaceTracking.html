@@ -5,6 +5,8 @@
   <script src="/js/commons.js"></script>
   <script src="/js/drawing.js"></script>
   <script src="/js/faceDetectionControls.js"></script>
+  <script src="/js/imageSelectionControls.js"></script>
+  <script src="/js/bbt.js"></script>
   <link rel="stylesheet" href="/css/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.css">
   <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -142,12 +144,40 @@
 
 
   <script>
+    let faceMatcher = null
     let forwardTimes = []
     let withFaceLandmarks = false
     let withBoxes = true
 
+    async function updateResults() {
+      const videoEl = $('#inputVideo').get(0)
+
+      if(videoEl.paused || videoEl.ended || !isFaceDetectionModelLoaded())
+        return setTimeout(() => onPlay())
+
+      const options = getFaceDetectorOptions()
+      const results = await faceapi.detectAllFaces(videoEl, options).withFaceLandmarks().withFaceDescriptors()
+
+      drawFaceRecognitionResults(results)
+    }
+
+    function drawFaceRecognitionResults(results) {
+      const canvas = $('#overlay').get(0)
+      // resize detection and landmarks in case displayed image is smaller than
+      // original size
+      resizedResults = resizeCanvasAndResults($('#inputVideo').get(0), canvas, results)
+
+      const boxesWithText = resizedResults.map(({ detection, descriptor }) =>
+        new faceapi.BoxWithText(
+          detection.box,
+          faceMatcher.findBestMatch(descriptor).toString()
+        )
+      )
+      faceapi.drawDetection(canvas, boxesWithText)
+    }
+
     function onChangeWithFaceLandmarks(e) {
-      withFaceLandmarks = $(e.target).prop('checked')
+      withFaceLandmarks = !$(e.target).prop('checked')
     }
 
     function onChangeHideBoundingBoxes(e) {
@@ -162,30 +192,8 @@
     }
 
     async function onPlay() {
-      const videoEl = $('#inputVideo').get(0)
-
-      if(videoEl.paused || videoEl.ended || !isFaceDetectionModelLoaded())
-        return setTimeout(() => onPlay())
-
-
-      const options = getFaceDetectorOptions()
-
-      const ts = Date.now()
-
-      const faceDetectionTask = faceapi.detectSingleFace(videoEl, options)
-      const result = withFaceLandmarks
-        ? await faceDetectionTask.withFaceLandmarks()
-        : await faceDetectionTask
-
-      updateTimeStats(Date.now() - ts)
-
-      const drawFunction = withFaceLandmarks
-        ? drawLandmarks
-        : drawDetections
-
-      if (result) {
-        drawFunction(videoEl, $('#overlay').get(0), [result], withBoxes)
-      }
+      
+      updateResults()
 
       setTimeout(() => onPlay())
     }
@@ -194,6 +202,7 @@
       // load face detection and face landmark models
       await changeFaceDetector(TINY_FACE_DETECTOR)
       await faceapi.loadFaceLandmarkModel('/')
+      await faceapi.loadFaceRecognitionModel('/')
       changeInputSize(128)
 
       // try to access users webcam and stream the images
@@ -201,12 +210,19 @@
       const stream = await navigator.mediaDevices.getUserMedia({ video: {} })
       const videoEl = $('#inputVideo').get(0)
       videoEl.srcObject = stream
+
+      // initialize face matcher with 1 reference descriptor per bbt character
+      faceMatcher = await createBbtFaceMatcher(1)
+
+      updateResults() 
+
     }
 
-    function updateResults() {}
+    //function updateResults() {}
 
     $(document).ready(function() {
       renderNavBar('#navbar', 'webcam_face_tracking')
+      //initImageSelectionControls()
       initFaceDetectionControls()
       run()
     })
