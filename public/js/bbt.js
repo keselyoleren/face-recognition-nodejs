@@ -1,4 +1,27 @@
 const classes = ['amy', 'bernadette', 'howard', 'leonard', 'penny', 'raj', 'sheldon', 'stuart']
+console.log(classes)
+getAllfolder()
+
+function getAllfolder(){
+  var xmlhttp;
+  xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function(){
+      if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
+          var data = xmlhttp.responseText
+          dataArray = JSON.parse(data)
+          array = dataArray.map(function(item){
+            return  item.nama.toString()
+          })
+          getFolder(array)
+      }
+  }
+  xmlhttp.open("GET", "/dataset/sub-folder", true);
+  xmlhttp.send();
+}
+
+function getFolder(array){
+  console.log(array)
+}
 
 function getFaceImageUri(className, idx) {
   return `${className}/${className}${idx}.png`
@@ -21,7 +44,7 @@ function renderFaceImageSelectList(selectListId, onChange, initialValue) {
     })
   }
 
-  renderSelectList(
+  renderSelectList( 
     selectListId,
     onChange,
     getFaceImageUri(initialValue.className, initialValue.imageIdx),

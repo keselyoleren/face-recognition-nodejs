@@ -83,3 +83,13 @@ exports.uploadFromCamera = function(req, res){
     res.redirect('/dataset')
 
 }
+
+exports.subFolder  = function(req, res){
+    con.query("SELECT nama FROM folder", function(err, result){
+        if (err) {
+            console.log("error", err);
+        } else {
+            res.send(result);
+        }
+    });
+}
