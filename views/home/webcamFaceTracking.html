@@ -24,6 +24,10 @@
       <video onplay="onPlay(this)" id="inputVideo" autoplay muted></video>
       <canvas id="overlay" />
     </div>
+    <div style="position: relative" class="margin">
+      <img id="cropFaceImg" src="" />
+      <canvas id="cropFace" />
+    </div>
 
     <div class="row side-by-side">
 
@@ -159,10 +163,8 @@
       const options = getFaceDetectorOptions()
       const results = await faceapi.detectAllFaces(videoEl, options).withFaceLandmarks().withFaceDescriptors()
 
-      drawFaceRecognitionResults(results)
-    }
+      //drawFaceRecognitionResults(results)
 
-    function drawFaceRecognitionResults(results) {
       const canvas = $('#overlay').get(0)
       // resize detection and landmarks in case displayed image is smaller than
       // original size
@@ -175,7 +177,17 @@
         )
       )
       faceapi.drawDetection(canvas, boxesWithText)
-    }
+
+      const canvases = await faceapi.extractFaces(videoEl, boxesWithText)
+      console.log(canvases[0] instanceof HTMLCanvasElement)
+
+      var dataURL = canvases[0].toDataURL()
+      document.getElementById('cropFaceImg').src = dataURL
+    } 
+
+    // function drawFaceRecognitionResults(results) {
+      
+    // }
 
     function onChangeWithFaceLandmarks(e) {
       withFaceLandmarks = !$(e.target).prop('checked')
