@@ -11,5 +11,5 @@ router.get('/imageCamera', function(req, res){
     res.send("example")
 })
 router.post('/upload-from-camera', datasetController.uploadFromCamera)
-
+router.get("/sub-folder", datasetController.subFolder)
 module.exports = router;
