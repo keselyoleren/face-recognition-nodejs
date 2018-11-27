@@ -42,6 +42,11 @@ function renderNavBar(navbarId, exampleUri) {
       name: 'Example Face Recognition'
     },
 
+    {
+      uri: 'dataset',
+      name: 'Create dataset'
+    }
+
   ]
 
   const navbar = $(navbarId).get(0)
