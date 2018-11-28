@@ -3,65 +3,58 @@
 <head>
   
   <link rel="stylesheet" href="/css/styles.css">
+  <title>Neura | Vision</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.css">
+  <link rel="stylesheet" href="/css/bostrap.css">
   <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+  <style>
+    canvas, video {
+        margin-left: 0px;
+        margin-top: 0px;
+        position: absolute;
+    }
+  </style>
 </head>
 <body>
-  <div id="navbar"></div>
-  <div class="center-content page-container">
-    <div class="progress" id="loader">
-      <div class="indeterminate"></div>
-    </div>
+  <!-- <div id="navbar"></div> -->
 
-    <div class="row">
-      <div class="col-md-7">
-        <div  class="margin">
-          <video onplay="onPlay(this)" id="inputVideo" autoplay muted></video>
-          <canvas id="overlay" />
-        </div>
+  <div class="container">
+      <div class="row">
+          <h2>NeuraVision</h2><h4 id="p_name">Create Dataset</h4>
+          <hr>
       </div>
-      <div class="col-md-5">
-        <div id="facesContainer"></div>
-      </div>
-    </div>
-
-    <!-- <input type="text" name="image" id="imageFace" value=""> -->
-    
-  
-    <div class="center-content page-container">
-      <!-- <div class="col-md-6">
-          <div onload="init();" id="my_camera"></div>
-          <br>
-          <div onload="init();" id="results"></div>
-      </div> -->
-      <form action="/dataset/upload-from-camera" class="form-image-upload" method="POST" >
-          <!-- <input class="btn btn-info" type=button value="Capture" onClick="preview_snapshot()"> -->
-          <div class="form-group" id="pre_take_buttons">
-              <br>
-              <br>
-              <input type="hidden" id="imageFace" name="image"  value="">
-              <input type="hidden" name="folder_id" value="<%= id %>">
-              <input type="hidden" name="folder_name" value="<%= nama %>">
-              <!-- <input type="text" class="form-control" name="image_name"  placeholder="Image Name"> -->
+      <div class="">
+          <div class="col-md-2">
+              <video onplay="onPlay(this)" width="480" height="320" id="inputVideo" autoplay muted ></video>
+              <canvas width="480" height="320" id="overlay"></canvas>
           </div>
-          <!-- <div class="form-group" id="post_take_buttons" style="display:none">
-              <input class="btn btn-info" type=button value="&lt; Take Another" onClick="cancel_preview()">
-              <input class="btn btn-success" type=button value="Save Photo &gt;" onClick="save_photo()" style="font-weight:bold;">
-          </div> -->
-          <input class="btn btn-success" type="submit" name="upload" value="save">
-      </form>
-    </div>
-  </div>
+          <div class="col-md-2 col-md-offset-6">
+              <h4>Face Detect</h4>
+              <div id="facesContainer"></div>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-md-4 col-md-offset-6">
+            <form action="/dataset/upload-from-camera" class="form-image-upload" method="POST" >
+              <div class="form-group" id="pre_take_buttons">
+                  <br>
+                  <br>
+                  <input type="hidden" id="imageFace" name="image"  value="">
+                  <input type="hidden" name="folder_id" value="<%= id %>">
+                  <input type="hidden" name="folder_name" value="<%= nama %>">
+              </div>
+              <input class="btn btn-info fa fa-save" type="submit" name="upload" value="save">
+          </form>
+          </div>
+      </div>
+  </div> 
 
   <script src="/dist/face-api.js"></script>
   <script src="/js/commons.js"></script>
   <script src="/js/drawing.js"></script>
   <script src="/js/faceDetectionControls.js"></script>
-  <!-- <script src="/js/webcam.min.js"></script>
-  <script src="/js/setCam.js"></script> -->
   <script>
-
     let forwardTimes = []
     let withFaceLandmarks = false
     let withBoxes = true

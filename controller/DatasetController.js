@@ -4,7 +4,7 @@ var fs = require('fs')
 var path = require('path')
 var dirName = path.join(__dirname, '../public/images/')
 var buffer = require('buffer').Buffer
-const sharp = require('sharp');
+// const sharp = require('sharp');
 
 exports.index = function(req, res){
     con.query("SELECT * FROM folder", function(err, result){
@@ -57,7 +57,8 @@ exports.uploadFromCamera = function(req, res){
     var folderID = req.body.folder_id
     var image = req.body.image
     var base64 = image.replace(/^data\:image\/\w+\;base64\,/, '')
-    var imageName = folderName
+    var id = Math.floor(Math.random() * 100 + 1)
+    var imageName = folderName + id
     // res.send({base64})
     // upload data in folder
     var buf = Buffer.from(base64, 'base64')
@@ -75,14 +76,14 @@ exports.uploadFromCamera = function(req, res){
 
     // resize image 
     sharp(image_path)
-    .grayscale()
-    .resize(150, 150)
-    .toBuffer()
-    .then( data => {
-        fs.writeFileSync(image_path, data);
-    })
-    .catch( err => {
-        console.log(err);
+        .grayscale()
+        .resize(150, 150)
+        .toBuffer()
+        .then( data => {
+            fs.writeFileSync(image_path, data);
+        })
+        .catch( err => {
+            console.log(err);
     });
     // --end of resize image
 
