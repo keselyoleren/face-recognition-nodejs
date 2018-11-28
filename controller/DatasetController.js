@@ -4,6 +4,7 @@ var fs = require('fs')
 var path = require('path')
 var dirName = path.join(__dirname, '../public/images/')
 var buffer = require('buffer').Buffer
+const sharp = require('sharp');
 
 exports.index = function(req, res){
     con.query("SELECT * FROM folder", function(err, result){
@@ -61,8 +62,9 @@ exports.uploadFromCamera = function(req, res){
     // upload data in folder
     var buf = Buffer.from(base64, 'base64')
     var dirImage = dirName + folderName 
-    var image_path = ''
-    fs.writeFile(image_path = path.join(dirImage,  imageName + '.png'), buf, function(error) {
+    var image_path = path.join(dirImage,  imageName + '.png')
+
+    fs.writeFile(image_path, buf, function(error) {
         if (error) {
           throw error;
         } else {
@@ -71,8 +73,21 @@ exports.uploadFromCamera = function(req, res){
         }
     });
 
+    // resize image 
+    sharp(image_path)
+    .grayscale()
+    .resize(150, 150)
+    .toBuffer()
+    .then( data => {
+        fs.writeFileSync(image_path, data);
+    })
+    .catch( err => {
+        console.log(err);
+    });
+    // --end of resize image
+
     // upload data in database
-    var img = imageName + ".jpeg"
+    var img = imageName + ".png"
 
     var sql = "INSERT INTO `face_image`(`folder_id`,`image_name`,`image_path`) VALUES ('"+folderID+"','"+img+"','"+image_path+"')";  
     con.query(sql, function(err, result){
