@@ -84,7 +84,19 @@
 
       if(!canvases.length == 0){
         var dataURL = canvases[0].toDataURL()
-        document.getElementById('cropFaceImg').src = dataURL
+        var img = document.getElementById('cropFaceImg').src = dataURL
+        var folder = document.getElementById('folder')
+        var folder_id = document.getElementById('folder_id')
+        
+        $.ajax({
+          url: '/dataset/upload-from-camera',
+          method: 'post',
+          dataType: "JSON",
+          data: {image, folder, folder_id},
+          success: function(data){
+            console.log(data)
+          }
+        })
       }
     }
 
@@ -106,7 +118,6 @@
       const stream = await navigator.mediaDevices.getUserMedia({ video: {} })
       const videoEl = $('#inputVideo').get(0)
       videoEl.srcObject = stream
-
       updateResults()
     }
 

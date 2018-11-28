@@ -35,7 +35,7 @@ exports.createFolder = function(req, res){
         if(err)throw err;
         console.log("data saved")
     })
-    fs.mkdirSync(dirName + namaFolder, 0o777)
+    fs.mkdirSync(dirName + namaFolder, 777)
     res.redirect("back")
 }
 
@@ -43,7 +43,6 @@ exports.getImgCamera = function(req, res, next){
     var id = req.params.id 
     var sql = "SELECT nama FROM folder WHERE id = " + id
     con.query(sql, function(err, result, fields){
-        console.log(result)
         res.render('dataset/imageCamera', {
             id: id,
             nama: result[0].nama
@@ -56,8 +55,9 @@ exports.uploadFromCamera = function(req, res){
     var folderName = req.body.folder_name
     var folderID = req.body.folder_id
     var image = req.body.image
-    var imageName = req.body.image_name
-
+    var imageName = folderName
+    console.log(imageName)
+    
     // upload data in folder
     var buf = Buffer.from(image, 'base64')
     var dirImage = dirName + folderName 
