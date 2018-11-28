@@ -17,10 +17,7 @@
       <video onplay="onPlay(this)" id="inputVideo" autoplay muted></video>
       <canvas id="overlay" />
     </div>
-    <div style="position: relative" class="margin">
-      <img id="cropFaceImg" src="" />
-      <canvas id="cropFace" />
-    </div>
+    <div id="facesContainer"></div>
   
     <div class="center-content page-container">
       <div class="col-md-6">
@@ -55,58 +52,51 @@
   <script src="/js/setCam.js"></script>
   <script>
 
-    let withFaceLandmarks = true
+    let forwardTimes = []
+    let withFaceLandmarks = false
     let withBoxes = true
 
     async function updateResults() {
-      const videoEl = $('#inputVideo').get(0)
-
-      if(videoEl.paused || videoEl.ended || !isFaceDetectionModelLoaded())
+      if (!isFaceDetectionModelLoaded()) {
         return setTimeout(() => onPlay())
-
-      const options = getFaceDetectorOptions()
-  
-      const results = await faceapi.detectAllFaces(videoEl, options).withFaceLandmarks().withFaceDescriptors()
-
-      const canvas = $('#overlay').get(0)
-      resizedResults = resizeCanvasAndResults($('#inputVideo').get(0), canvas, results)
-
-      const boxesWithText = resizedResults.map(({ detection, descriptor }) =>
-        new faceapi.BoxWithText(
-          detection.box,
-          ''
-        )
-      )
-      faceapi.drawDetection(canvas, boxesWithText)
-
-      const canvases = await faceapi.extractFaces(videoEl, boxesWithText)
-      console.log(canvases[0] instanceof HTMLCanvasElement)
-
-      if(!canvases.length == 0){
-        var dataURL = canvases[0].toDataURL()
-        document.getElementById('cropFaceImg').src = dataURL
       }
+
+      const inputImgEl = $('#inputVideo').get(0)
+      const options = getFaceDetectorOptions()
+
+      const detections = await faceapi.detectAllFaces(inputImgEl, options)
+      const faceImages = await faceapi.extractFaces(inputImgEl, detections)
+
+      displayExtractedFaces(faceImages)
+
+    }
+
+    function displayExtractedFaces(faceImages) {
+      const canvas = $('#overlay').get(0)
+      const { width, height } = $('#inputVideo').get(0)
+      canvas.width = width
+      canvas.height = height
+
+      $('#facesContainer').empty()
+      faceImages.forEach(canvas => $('#facesContainer').append(canvas))
     }
 
     async function onPlay() {
 
       updateResults()
       setTimeout(() => onPlay())
+
     }
 
     async function run() {
-      // load face detection and face landmark models
-      await changeFaceDetector(TINY_FACE_DETECTOR)
-      await faceapi.loadFaceLandmarkModel('/')
-      await faceapi.loadFaceRecognitionModel('/')
-      changeInputSize(128)
+      // load face detection model
+      await changeFaceDetector(selectedFaceDetector)
 
-      // try to access users webcam and stream the images
-      // to the video element
       const stream = await navigator.mediaDevices.getUserMedia({ video: {} })
       const videoEl = $('#inputVideo').get(0)
       videoEl.srcObject = stream
 
+      // start processing image
       updateResults()
     }
 
