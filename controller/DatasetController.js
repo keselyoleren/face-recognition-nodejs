@@ -55,14 +55,14 @@ exports.uploadFromCamera = function(req, res){
     var folderName = req.body.folder_name
     var folderID = req.body.folder_id
     var image = req.body.image
+    var base64 = image.replace(/^data\:image\/\w+\;base64\,/, '')
     var imageName = folderName
-    console.log(imageName)
-    
+    // res.send({base64})
     // upload data in folder
-    var buf = Buffer.from(image, 'base64')
+    var buf = Buffer.from(base64, 'base64')
     var dirImage = dirName + folderName 
     var image_path = ''
-    fs.writeFile(image_path = path.join(dirImage,  imageName + '.jpeg'), buf, function(error) {
+    fs.writeFile(image_path = path.join(dirImage,  imageName + '.png'), buf, function(error) {
         if (error) {
           throw error;
         } else {

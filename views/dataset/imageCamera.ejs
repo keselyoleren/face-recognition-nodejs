@@ -13,35 +13,42 @@
     <div class="progress" id="loader">
       <div class="indeterminate"></div>
     </div>
-    <div style="position: relative" class="margin">
-      <video onplay="onPlay(this)" id="inputVideo" autoplay muted></video>
-      <canvas id="overlay" />
+
+    <div class="row">
+      <div class="col-md-7">
+        <div  class="margin">
+          <video onplay="onPlay(this)" id="inputVideo" autoplay muted></video>
+          <canvas id="overlay" />
+        </div>
+      </div>
+      <div class="col-md-5">
+        <div id="facesContainer"></div>
+      </div>
     </div>
-    <div style="position: relative" class="margin">
-      <img id="cropFaceImg" src="" />
-      <canvas id="cropFace" />
-    </div>
+
+    <!-- <input type="text" name="image" id="imageFace" value=""> -->
+    
   
     <div class="center-content page-container">
-      <div class="col-md-6">
+      <!-- <div class="col-md-6">
           <div onload="init();" id="my_camera"></div>
           <br>
           <div onload="init();" id="results"></div>
-      </div>
+      </div> -->
       <form action="/dataset/upload-from-camera" class="form-image-upload" method="POST" >
-          <input class="btn btn-info" type=button value="Capture" onClick="preview_snapshot()">
+          <!-- <input class="btn btn-info" type=button value="Capture" onClick="preview_snapshot()"> -->
           <div class="form-group" id="pre_take_buttons">
               <br>
               <br>
-              <input type="hidden" name="image" id="image" value="">
+              <input type="hidden" id="imageFace" name="image"  value="">
               <input type="hidden" name="folder_id" value="<%= id %>">
               <input type="hidden" name="folder_name" value="<%= nama %>">
-              <input type="text" class="form-control" name="image_name"  placeholder="Image Name">
+              <!-- <input type="text" class="form-control" name="image_name"  placeholder="Image Name"> -->
           </div>
-          <div class="form-group" id="post_take_buttons" style="display:none">
+          <!-- <div class="form-group" id="post_take_buttons" style="display:none">
               <input class="btn btn-info" type=button value="&lt; Take Another" onClick="cancel_preview()">
               <input class="btn btn-success" type=button value="Save Photo &gt;" onClick="save_photo()" style="font-weight:bold;">
-          </div>
+          </div> -->
           <input class="btn btn-success" type="submit" name="upload" value="save">
       </form>
     </div>
@@ -51,73 +58,57 @@
   <script src="/js/commons.js"></script>
   <script src="/js/drawing.js"></script>
   <script src="/js/faceDetectionControls.js"></script>
-  <script src="/js/webcam.min.js"></script>
-  <script src="/js/setCam.js"></script>
+  <!-- <script src="/js/webcam.min.js"></script>
+  <script src="/js/setCam.js"></script> -->
   <script>
 
-    let withFaceLandmarks = true
+    let forwardTimes = []
+    let withFaceLandmarks = false
     let withBoxes = true
 
     async function updateResults() {
-      const videoEl = $('#inputVideo').get(0)
-
-      if(videoEl.paused || videoEl.ended || !isFaceDetectionModelLoaded())
+      if (!isFaceDetectionModelLoaded()) {
         return setTimeout(() => onPlay())
-
-      const options = getFaceDetectorOptions()
-  
-      const results = await faceapi.detectAllFaces(videoEl, options).withFaceLandmarks().withFaceDescriptors()
-
-      const canvas = $('#overlay').get(0)
-      resizedResults = resizeCanvasAndResults($('#inputVideo').get(0), canvas, results)
-
-      const boxesWithText = resizedResults.map(({ detection, descriptor }) =>
-        new faceapi.BoxWithText(
-          detection.box,
-          ''
-        )
-      )
-      faceapi.drawDetection(canvas, boxesWithText)
-
-      const canvases = await faceapi.extractFaces(videoEl, boxesWithText)
-      console.log(canvases[0] instanceof HTMLCanvasElement)
-
-      if(!canvases.length == 0){
-        var dataURL = canvases[0].toDataURL()
-        var img = document.getElementById('cropFaceImg').src = dataURL
-        var folder = document.getElementById('folder')
-        var folder_id = document.getElementById('folder_id')
-        
-        $.ajax({
-          url: '/dataset/upload-from-camera',
-          method: 'post',
-          dataType: "JSON",
-          data: {image, folder, folder_id},
-          success: function(data){
-            console.log(data)
-          }
-        })
       }
+
+      const inputImgEl = $('#inputVideo').get(0)
+      const options = getFaceDetectorOptions()
+
+      const detections = await faceapi.detectAllFaces(inputImgEl, options)
+      const faceImages = await faceapi.extractFaces(inputImgEl, detections)
+
+      displayExtractedFaces(faceImages)
+
+    }
+
+    function displayExtractedFaces(faceImages) {
+      const canvas = $('#overlay').get(0)
+      const { width, height } = $('#inputVideo').get(0)
+      canvas.width = width
+      canvas.height = height
+
+      $('#facesContainer').empty()
+      faceImages.forEach(canvas => $('#facesContainer').append(canvas))
+      var dataURL = faceImages[0].toDataURL()
+      $("#imageFace").val(dataURL)
     }
 
     async function onPlay() {
 
       updateResults()
       setTimeout(() => onPlay())
+
     }
 
     async function run() {
-      // load face detection and face landmark models
-      await changeFaceDetector(TINY_FACE_DETECTOR)
-      await faceapi.loadFaceLandmarkModel('/')
-      await faceapi.loadFaceRecognitionModel('/')
-      changeInputSize(128)
+      // load face detection model
+      await changeFaceDetector(selectedFaceDetector)
 
-      // try to access users webcam and stream the images
-      // to the video element
       const stream = await navigator.mediaDevices.getUserMedia({ video: {} })
       const videoEl = $('#inputVideo').get(0)
       videoEl.srcObject = stream
+
+      // start processing image
       updateResults()
     }
 
