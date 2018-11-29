@@ -4,7 +4,7 @@ var fs = require('fs')
 var path = require('path')
 var dirName = path.join(__dirname, '../public/images/')
 var buffer = require('buffer').Buffer
-// const sharp = require('sharp');
+const sharp = require('sharp');
 
 exports.index = function(req, res){
     con.query("SELECT * FROM folder", function(err, result){
@@ -53,29 +53,34 @@ exports.getImgCamera = function(req, res, next){
 }
 
 exports.uploadFromCamera = function(req, res){
+    
     var folderName = req.body.folder_name
     var folderID = req.body.folder_id
     var image = req.body.image
     var base64 = image.replace(/^data\:image\/\w+\;base64\,/, '')
     var id = Math.floor(Math.random() * 100 + 1)
     var imageName = folderName + id
-    // res.send({base64})
+
+    
     // upload data in folder
     var buf = Buffer.from(base64, 'base64')
     var dirImage = dirName + folderName 
     var image_path = path.join(dirImage,  imageName + '.png')
 
-    fs.writeFile(image_path, buf, function(error) {
-        if (error) {
-          throw error;
-        } else {
-          console.log("success");
-          return true;
-        }
-    });
+    
+
+    // fs.writeFile(image_path, buf, function(error) {
+    //     if (error) {
+    //       throw error;
+    //     } else {
+    //       console.log("success");
+    //       return true;
+    //     }
+    // });
+    
 
     // resize image 
-    sharp(image_path)
+    var neura = sharp(buf)
         .grayscale()
         .resize(150, 150)
         .toBuffer()
@@ -85,6 +90,12 @@ exports.uploadFromCamera = function(req, res){
         .catch( err => {
             console.log(err);
     });
+
+    // res.send({neura})
+    
+
+    
+    
     // --end of resize image
 
     // upload data in database

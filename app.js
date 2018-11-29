@@ -55,19 +55,10 @@ app.get('/batch_face_landmarks', (req, res) => res.sendFile(path.join(viewsDir, 
 app.get('/batch_face_recognition', (req, res) => res.sendFile(path.join(viewsDir, '/home/batchFaceRecognition.html')))
 app.get('/get_image_from_camera', (req, res) => res.sendFile(path.join(viewsDir, '/train/get_image_from_camera.html')))
 
-app.use(function(req, res, next){
-  var err = new Error("kosong")
-  err.status = 404;
-  next(err)
-})
 
-app.get('/html', function(req, res) {
-  res.render('index');
-});
-
-app.use(function(req, res, next) {
-  next(createError(404));
-});
+// app.use(function(req, res, next) {
+//   next(createError(404));
+// });
 
 app.use(function(err, req, res, next) {
   res.locals.message = err.message;
