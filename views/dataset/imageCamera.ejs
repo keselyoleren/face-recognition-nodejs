@@ -33,6 +33,7 @@
               <h4>Face Detect</h4>
               <div id="facesContainer"></div>
           </div>
+        </div>
       </div>
       <div class="row">
           <div class="col-md-4 col-md-offset-6">
@@ -84,6 +85,11 @@
       faceImages.forEach(canvas => $('#facesContainer').append(canvas))
       var dataURL = faceImages[0].toDataURL()
       $("#imageFace").val(dataURL)
+    
+      $("#facesContainer2").empty()
+      faceImages.forEach(canvas => $('#facesContainer2').append(canvas))
+      var dataURL2 = faceImages[1].toDataURL()
+      console.log(dataURL2)
     }
 
     async function onPlay() {

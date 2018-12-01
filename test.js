@@ -1,4 +1,5 @@
-var i;
-for (i = 0; i < 5; i++) {
-    console.log(i)
-}
+var array = 1232342345 
+
+// var result = Math.max.apply(null, array)
+// console.log(result)                
+console.log(Array.from(array))

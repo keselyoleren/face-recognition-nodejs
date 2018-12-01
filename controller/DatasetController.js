@@ -6,6 +6,7 @@ var dirName = path.join(__dirname, '../public/images/')
 var buffer = require('buffer').Buffer
 const sharp = require('sharp');
 
+
 exports.index = function(req, res){
     con.query("SELECT * FROM folder", function(err, result){
         if (err) {
@@ -52,22 +53,56 @@ exports.getImgCamera = function(req, res, next){
     
 }
 
-exports.uploadFromCamera = function(req, res){
-    
+exports.uploadFromCamera = function(req, res, next){
+
     var folderName = req.body.folder_name
     var folderID = req.body.folder_id
     var image = req.body.image
     var base64 = image.replace(/^data\:image\/\w+\;base64\,/, '')
     var id = Math.floor(Math.random() * 100 + 1)
-    var imageName = folderName + id
+    // var imageName = folderName + id
+    var imageName = null
+    var maxFileSavedName = []    
 
+    fs.readdir(dirName + folderName, function (err, files) {
+        //handling error
+        if (err) {
+            return console.log('Unable to scan directory: ' + err);
+        } 
+        // listing all files using forEach
+        if(files.length != 0) {
+            for(var i = 0; i < files.length; i++){
+                var filename_split_ext = files[i].split('.')
+                var filename_split_textNumber = filename_split_ext[0].split(/([0-9]+)/)
+                maxFileSavedName.concat(filename_split_textNumber[1])
+            }
+        } else {
+            maxFileSavedName[0] = 1
+        }
+
+        
+        
+    });
+
+    //res.send({maxFileSavedName})
+
+    if(maxFileSavedName.length == 1) {
+        imageName = folderName + maxFileSavedName[0].toString()
+    } else {
+        console.log(maxFileSavedName)
+        // var data = [1,2,3,4,5,6,7,8,9]
+        var maxNum = Math.max.apply(null, maxFileSavedName)
+        var nextNum = maxNum 
+        imageName = folderName + nextNum.toString()
+    }
+
+    // res.send({admin:"admin"})
     
+
     // upload data in folder
     var buf = Buffer.from(base64, 'base64')
     var dirImage = dirName + folderName 
     var image_path = path.join(dirImage,  imageName + '.png')
-
-    
 
     // fs.writeFile(image_path, buf, function(error) {
     //     if (error) {
@@ -77,8 +112,7 @@ exports.uploadFromCamera = function(req, res){
     //       return true;
     //     }
     // });
-    
-
+   
     // resize image 
     var neura = sharp(buf)
         .grayscale()
@@ -91,11 +125,6 @@ exports.uploadFromCamera = function(req, res){
             console.log(err);
     });
 
-    // res.send({neura})
-    
-
-    
-    
     // --end of resize image
 
     // upload data in database
@@ -106,7 +135,6 @@ exports.uploadFromCamera = function(req, res){
         if(err)throw err;
         console.log("data saved")
     })
-
     res.redirect('/dataset')
 
 }
@@ -116,7 +144,7 @@ exports.subFolder  = function(req, res){
         if (err) {
             console.log("error", err);
         } else {
-            res.send(result);
+            res.send(result); 
         }
     });
 }

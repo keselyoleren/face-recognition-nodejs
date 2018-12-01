@@ -7,8 +7,7 @@ var logger = require('morgan');
 var mysql = require('mysql');
 var con = require('./config/db')
 const { get } = require('request')
-
-
+var bodyParser = require('body-parser')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var uploadRuter = require('./routes/upload');
@@ -25,6 +24,9 @@ app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
 app.use(express.json());
+app.use(bodyParser({limit: '50mb'}))
+// app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -65,6 +67,7 @@ app.use(function(err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
   res.status(err.status || 500);
   res.render('error');
+  // res.send("error")
 });
 
 module.exports = app
