@@ -59,7 +59,6 @@ exports.uploadFromCamera = function(req, res, callback){
     var folderID = req.body.folder_id
     var image = req.body.image
     var base64 = image.replace(/^data\:image\/\w+\;base64\,/, '')
-<<<<<<< HEAD
 
     fs.readdir(dirName + folderName, function (err, files) {
 
@@ -121,78 +120,6 @@ exports.uploadFromCamera = function(req, res, callback){
 
         // callback(null, maxFileSavedName)
     });
-=======
-    var id = Math.floor(Math.random() * 100 + 1)
-    // var imageName = folderName + id
-    
-               
-        fs.readdir(dirName + folderName, function (err, files) {
-
-            var imageName = null
-            var maxFileSavedName = []
-            var imgId = 0
-
-            //handling error
-            if (err) {
-                return console.log('Unable to scan directory: ' + err);
-            } else {
-                var remaining = files.length
-
-                if (remaining == 0){
-                    //maxFileSavedName[0] = 1
-                    imgId += 1
-                } else {
-                    for (var i = 0; i < files.length; i++) {
-                        var filename_split_ext = files[i].split('.')
-                        var filename_split_textNumber = filename_split_ext[0].split(/([0-9]+)/)
-                        maxFileSavedName.push(parseInt(filename_split_textNumber[1]))
-                    }
-                    imgId = maxFileSavedName[maxFileSavedName.length - 1] + 1
-                }
-
-                
-                
-                // if (maxFileSavedName.length == 0) {
-                //     imageName = folderName + maxFileSavedName[0].toString()
-                // }
-                
-                var maxNum = Math.max(...maxFileSavedName)
-                var nextNum = maxNum + 1
-                imageName = folderName + imgId.toString()
-    
-                // upload data in folder
-                var buf = Buffer.from(base64, 'base64')
-                var dirImage = dirName + folderName 
-                var image_path = path.join(dirImage,  imageName + '.png')
-    
-                // resize image 
-                var neura = sharp(buf)
-                    .grayscale()
-                    .resize(150, 150)
-                    .toBuffer()
-                    .then( data => {
-                        fs.writeFileSync(image_path, data);
-                    })
-                    .catch( err => {
-                        console.log(err);
-                });
-                // --end of resize image
-    
-                // upload data in database
-                var img = imageName + ".png"
-    
-                var sql = "INSERT INTO `face_image`(`folder_id`,`image_name`,`image_path`) VALUES ('"+folderID+"','"+img+"','"+image_path+"')";  
-                con.query(sql, function(err, result){
-                    if(err)throw err;
-                    console.log("data saved")
-                })
-                res.redirect('/dataset')
-
-            }
-
-            callback(null, maxFileSavedName)
-        });
->>>>>>> 708a04104fbbbaf4cb2c6d244c79174626b43843
 
 }
 

@@ -36,14 +36,14 @@ app.use(express.static(path.join(__dirname, 'public/media')))
 app.use(express.static(path.join(__dirname, 'public/weights')))
 
 
-app.use('/', indexRouter);
+// app.use('/', indexRouter);
 app.use('/import-data', importData);
 app.use('/users', usersRouter);
 app.use('/upload', uploadRuter);
 app.use('/dataset', datasetRouter)
 app.use('/train', trainRouter)
 
-app.get('/', (req, res) => res.redirect('/face_and_landmark_detection'))
+app.get('/', (req, res) => res.sendFile(path.join(viewsDir, '/home/webcamFaceTracking.html')))
 app.get('/face_and_landmark_detection', (req, res) => res.sendFile(path.join(viewsDir, '/home/faceAndLandmarkDetection.html')))
 app.get('/face_extraction', (req, res) => res.sendFile(path.join(viewsDir, '/home/faceExtraction.html')))
 app.get('/face_recognition', (req, res) => res.sendFile(path.join(viewsDir, '/home/faceRecognition.html')))
@@ -70,4 +70,4 @@ app.use(function(err, req, res, next) {
   // res.send("error")
 });
 
-module.exports = app
+module.exports = app 
