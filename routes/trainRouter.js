@@ -10,5 +10,5 @@ router.get('/get_image_from_camera', function(req, res){
 })
 
 router.post('/upload-from-camera', trainController.uploadFromCamera)
-
+router.get("/train-dataset", trainController.trainDataset)
 module.exports = router;

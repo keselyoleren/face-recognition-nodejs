@@ -4,6 +4,9 @@
 <head>
     <% include ../layout/header %>
     <link rel="stylesheet" href="/datatable/css/main.css">
+    <script src="/dist/face-api.js"></script>
+    <script src="/js/faceDetectionControls.js"></script>
+    <script type="text/javascript" src="/js/train.js"></script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -33,23 +36,19 @@
                     <!-- /.box-header -->
                     <div class="box-body no-padding">
                       <div class="box-body">
-                          
-                        <!-- content here -->
-
+                        <a href="#" id="" onclick="createBbtFaceMatcher(1);" class="btn btn-info">Train</a>                          
                       </div>
                     </div>
                 </div>
             </div>
         </section>
     </div>
-
-    <!-- modal -->
-  
     <% include ../layout/footer %>
 
 </div>
 <% include ../layout/js %>
 <script type="text/javascript" src="/datatable/js/main.js"></script>
+
 <script type="text/javascript" src="/datatable/js/bostrap.min.js"></script>
 </body>
 </html>
