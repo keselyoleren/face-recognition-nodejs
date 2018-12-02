@@ -55,10 +55,9 @@ function renderFaceImageSelectList(selectListId, onChange, initialValue) {
 
 // fetch first image of each class and compute their descriptors
 async function createBbtFaceMatcher(numImagesForTraining = 1) {
-    // await changeFaceDetector(TINY_FACE_DETECTOR)
-    // faceapi.nets.tinyFaceDetector
-    // await faceapi.loadFaceLandmarkModel('/')
     await faceapi.loadTinyFaceDetectorModel('/')
+    await faceapi.loadFaceLandmarkModel('/')
+    await faceapi.loadFaceRecognitionModel('/')
     const maxAvailableImagesPerClass = 5
     numImagesForTraining = Math.min(numImagesForTraining, maxAvailableImagesPerClass)
 
@@ -66,7 +65,6 @@ async function createBbtFaceMatcher(numImagesForTraining = 1) {
         async className => {
         const descriptors = []
         for (let i = 1; i < (numImagesForTraining + 1); i++) {
-            console.log(numImagesForTraining[i])
             const img = await faceapi.fetchImage("../images/" + className + "/" + className + i + ".png")
             descriptors.push(await faceapi.computeFaceDescriptor(img))
         }
@@ -79,6 +77,6 @@ async function createBbtFaceMatcher(numImagesForTraining = 1) {
   ))
 
 var faceMatcher =  new faceapi.FaceMatcher(labeledFaceDescriptors)
-console.log(faceMatcher)
+console.log(JSON.stringify(faceMatcher))
 
 }
