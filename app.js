@@ -14,6 +14,7 @@ var uploadRuter = require('./routes/upload');
 var importData = require('./routes/importData');
 var datasetRouter  = require('./routes/datasetRouter')
 var trainRouter = require("./routes/trainRouter")
+var testRouter = require("./routes/testRouter")
 
 var app = express();
 
@@ -42,6 +43,7 @@ app.use('/users', usersRouter);
 app.use('/upload', uploadRuter);
 app.use('/dataset', datasetRouter)
 app.use('/train', trainRouter)
+app.use('/test', testRouter)
 
 app.get('/', (req, res) => res.sendFile(path.join(viewsDir, '/home/webcamFaceTracking.html')))
 app.get('/face_and_landmark_detection', (req, res) => res.sendFile(path.join(viewsDir, '/home/faceAndLandmarkDetection.html')))

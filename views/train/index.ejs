@@ -4,6 +4,25 @@
 <head>
     <% include ../layout/header %>
     <link rel="stylesheet" href="/datatable/css/main.css">
+    <link rel="stylesheet" type="text/html" href="/progers/loading-bar.css">
+    <style>
+        .progress-bar.animate {
+            width: 100%;
+        }
+
+        .modal-backdrop {
+            opacity: 0.5;
+        }
+
+        .modal-dialog {
+            -webkit-transform: translate(0px, 50%);
+            transform: translate(0px, 50%);
+        }
+
+        .progress-popup {
+            margin-bottom: 0;
+        }
+    </style>
     <script src="/dist/face-api.js"></script>
     <script src="/js/faceDetectionControls.js"></script>
     <script type="text/javascript" src="/js/train.js"></script>
@@ -17,11 +36,11 @@
     <div class="content-wrapper">
         <section class="content-header">
             <h1>
-                Dataset
+                Train
             </h1>
             <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li class="active">Dataset</li>
+                <li><a href="#"><i class="fa fa-dashboard"></i> Train</a></li>
+                <li class="active">Train</li>
             </ol>
         </section>
 
@@ -31,13 +50,42 @@
                 <div class="col-md-12">
                   <div class="box">
                     <div class="box-header with-border">
-                      <h3 class="box-title">List Dataset</h3>
+                      <h3 class="box-title">Train All Dataset</h3>
                     </div>
-                    <!-- /.box-header -->
                     <div class="box-body no-padding">
                       <div class="box-body">
-                        <a href="#" id="" onclick="createBbtFaceMatcher(1);" class="btn btn-info">Train</a>                          
+                        <a href="#loading" data-toggle="modal" id="load"  class="btn btn-info">Train</a>                          
                       </div>
+                    </div>
+                </div>
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Line Chart</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="chart">
+                        <canvas id="lineChart" style="height:250px"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+
+            <div class="modal js-loading-bar">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">Mohon Tunggu</div>
+                        <div class="modal-body">
+                            <div class="progress progress-popup">
+                                <div class="progress-bar"></div>
+                            </div>
+                       </div>
                     </div>
                 </div>
             </div>
@@ -47,8 +95,48 @@
 
 </div>
 <% include ../layout/js %>
+<script type="text/javascript" src="/progres/loading-bar.js"></script>
 <script type="text/javascript" src="/datatable/js/main.js"></script>
-
 <script type="text/javascript" src="/datatable/js/bostrap.min.js"></script>
+<script>
+    // Setup
+this.$('.js-loading-bar').modal({
+  backdrop: 'static',
+  show: false
+}).on('shown.bs.modal', function( event ) {
+
+   var $bar = $(event.target).find('.progress-bar'),
+       _wait = function() {       
+            setTimeout(function() {
+              if ( $bar.is(':visible')) { 
+                   $bar.addClass('animate');
+               } else {
+                  console.log('not ready'); 
+                  _wait();
+               }
+            }, 0);       
+       };
+   
+   _wait();
+   
+});
+
+$('#load').click(function() {
+  var $modal = $('.js-loading-bar'),
+      $bar = $modal.find('.progress-bar');
+  
+  $modal.modal('show');
+
+  setTimeout(function() {
+    $modal.modal('hide'); 
+    $bar.removeClass('animate');
+    //$modal.modal('hide');        
+  }, 1500);
+
+  var data = createBbtFaceMatcher(1)
+  console.log(data)
+});
+</script>
+
 </body>
 </html>

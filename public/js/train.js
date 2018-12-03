@@ -77,6 +77,54 @@ async function createBbtFaceMatcher(numImagesForTraining = 1) {
   ))
 
 var faceMatcher =  new faceapi.FaceMatcher(labeledFaceDescriptors)
-console.log(JSON.stringify(faceMatcher))
+var data = JSON.stringify(faceMatcher)
+console.log(data)
+// console.log(JSON.stringify(faceMatcher))
 
+var areaChartOptions = {
+  showScale               : true,
+  scaleGridLineColor      : 'rgba(0,0,0,.05)',
+  scaleGridLineWidth      : 1,
+  scaleShowHorizontalLines: true,
+  scaleShowVerticalLines  : true,
+  bezierCurve             : true,
+  bezierCurveTension      : 0.3,
+  pointDot                : false,
+  pointDotRadius          : 4,
+  pointDotStrokeWidth     : 1,
+  pointHitDetectionRadius : 20,
+  datasetStroke           : true,
+  datasetStrokeWidth      : 2,
+  datasetFill             : true,
+  maintainAspectRatio     : true,
+  responsive              : true
 }
+
+var areaChartData = {
+labels  : classes,
+// labels : ["January","February","March","April","May","June","July"],
+datasets: [
+  {
+    label               : 'Digital Goods',
+    fillColor           : 'rgba(60,141,188,0.9)',
+    strokeColor         : 'rgba(60,141,188,0.8)',
+    pointColor          : '#3b8bba',
+    pointStrokeColor    : 'rgba(60,141,188,1)',
+    pointHighlightFill  : '#fff',
+    pointHighlightStroke: 'rgba(60,141,188,1)',
+    data : [65,59,90,81,56,55,40]
+    // data: classes
+  }
+]
+}
+
+
+var lineChartCanvas          = $('#lineChart').get(0).getContext('2d')
+var lineChart                = new Chart(lineChartCanvas)
+var lineChartOptions         = areaChartOptions
+lineChartOptions.datasetFill = false
+lineChart.Line(areaChartData, lineChartOptions)
+}
+
+
+  
