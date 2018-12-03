@@ -91,6 +91,7 @@ exports.uploadFromCamera = function(req, res, callback){
             // upload data in folder
             var buf = Buffer.from(base64, 'base64')
             var dirImage = dirName + folderName 
+            
             var image_path = path.join(dirImage,  imageName + '.png')
 
             // resize image 
@@ -107,7 +108,7 @@ exports.uploadFromCamera = function(req, res, callback){
             // --end of resize image
 
             // upload data in database
-            var img = imageName + ".png"
+            var img = folderName + "/" + imageName + ".png"
 
             var sql = "INSERT INTO `face_image`(`folder_id`,`image_name`,`image_path`) VALUES ('"+folderID+"','"+img+"','"+image_path+"')";  
             con.query(sql, function(err, result){
@@ -131,4 +132,35 @@ exports.subFolder  = function(req, res){
             res.send(result); 
         }
     });
+}
+
+
+exports.showDataset = function(req, res){
+    id = req.params.id
+    var sql = "SELECT * FROM face_image WHERE folder_id = " + id
+    con.query(sql, function(err, result, fields){
+        if(err){
+            res.send("error")
+        }
+        res.render("dataset/show", {data:result})
+    }) 
+}
+
+exports.deleteDatasetFace = function(req, res){
+    var id = req.params.id
+    var sql1 = "SELECT * FROM face_image WHERE id = " + id
+    con.query(sql1, function(err, row, file){
+        if(err){
+            res.send("err")
+        }
+        fs.unlinkSync(row[0].image_path)
+    })
+    
+    var sql = "DELETE FROM face_image WHERE id = " + id
+    con.query(sql, function(err, result){
+        if(err){
+            res.send("error")
+        } 
+        res.redirect('back')
+    })
 }

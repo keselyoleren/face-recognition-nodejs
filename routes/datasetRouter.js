@@ -19,7 +19,8 @@ router.get('/imageCamera', function(req, res){
 })
 router.post("/upload-from-camera", datasetController.uploadFromCamera)
 router.get("/sub-folder", datasetController.subFolder)
-
+router.get("/show-dataset/(:id)", datasetController.showDataset)
+router.get('/delete-dataset-face/(:id)', datasetController.deleteDatasetFace)
 module.exports = router;
 
                     

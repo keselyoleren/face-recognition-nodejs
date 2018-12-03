@@ -14,11 +14,11 @@
     <div class="content-wrapper">
         <section class="content-header">
             <h1>
-                Dataset Face
+                All Face
             </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li class="active">Dataset Face</li>
+                <li class="active">All Face</li>
             </ol>
         </section>
 
@@ -28,7 +28,6 @@
                 <div class="col-md-12">
                   <div class="box">
                     <div class="box-header with-border">
-                      <a href="#addFolder" data-toggle="modal" class="btn btn-info fa fa-plus pull-left"></a>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body no-padding">
@@ -36,20 +35,18 @@
                         <table id="example2" class="table table-bordered table-hover">
                           <thead>
                           <tr>
-                            <th>Folder Name</th>
+                            <th>Face</th>
                             <th></th>
                           </tr>
                           </thead>
                           <tbody>
                             <% data.forEach(function(data){%>
                               <tr>
-                                 <td> 
-                                    <a href="/dataset/open-folder/<%= data.id%>">
-                                      <i class="fa fa-folder"></i> <%=data.nama %>
-                                    </a>
+                                <td> 
+                                    <img src="/images/<%= data.image_name %>" alt="kosong">
                                 </td>
                                 <td>
-                                  <a href="/dataset/show-dataset/<%= data.id%>" class="btn btn-info fa fa-eye"></a>
+                                  <a href="/dataset/delete-dataset-face/<%= data.id%>" class="btn btn-danger fa fa-trash"></a>
                                 </td>
                               </tr>
                             <%})%>
@@ -62,32 +59,6 @@
         </section>
     </div>
 
-
-
-    <div class="modal fade" id="addFolder">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title">Create Folder</h4>
-            </div>
-            <div class="modal-body">
-              <form action="/dataset/create-folder" method="POST">
-                <div class="form-group">
-                  <label for="">Folder Name</label>
-                  <input type="text" class="form-control" name="nama">
-                </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary">Save</button>
-            </div>
-          </form>
-          </div>
-        </div>
-      </div>
-  
     <% include ../layout/footer %>
 
 </div>
@@ -100,7 +71,7 @@
     $('#example2').DataTable({
       'paging'      : true,
       'lengthChange': true,
-      'searching'   : true,
+      'searching'   : false,
       'ordering'    : true,
       'info'        : true,
       'autoWidth'   : true
