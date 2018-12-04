@@ -5,6 +5,7 @@ var path = require('path')
 var dirName = path.join(__dirname, '../public/images/')
 var buffer = require('buffer').Buffer
 const sharp = require('sharp');
+var rimraf = require('rimraf')
 
 
 exports.index = function(req, res){
@@ -19,7 +20,17 @@ exports.index = function(req, res){
 
 exports.deleteDataset = function(req, res, next){
     var id = req.params.id
-    var sql = "DELETE FROM dataset WHERE id = " + id
+   
+    var sql1 = "SELECT * FROM folder WHERE id = " + id
+    con.query(sql1, function(err, row, file){
+        if(err){
+            res.send("err")
+        }
+        var file_path = dirName + row[0].nama
+        rimraf(file_path, function(){console.log('done')})
+    })
+
+    var sql = "DELETE FROM folder WHERE id = " + id
     con.query(sql, function(err, resulr){
         if(err){
             res.redirect('back')
