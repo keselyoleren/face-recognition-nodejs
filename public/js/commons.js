@@ -25,23 +25,21 @@ async function requestExternalImage(imageUrl) {
 function renderNavBar(navbarId, exampleUri) {
   const examples = [
     {
-      uri: 'face_recognition',
-      name: 'Face Recognition'
+      uri: 'webcam_face_tracking',
+      name: 'Real Time Face Recognition'
     },
+    // {
+    //   uri: 'face_recognition',
+    //   name: 'Face Recognition Upload File'
+    // },
     {
       uri: 'video_face_tracking',
       name: 'Video Face Tracking'
-    },
-    {
-      uri: 'webcam_face_tracking',
-      name: 'Webcam Face Tracking'
-    },
-    
-    {
-      uri: 'bbt_face_recognition',
-      name: 'Example Face Recognition'
-    },
-
+    }, 
+    // {
+    //   uri: 'bbt_face_recognition',
+    //   name: 'Example Face Recognition'
+    // },
     {
       uri: 'dataset',
       name: 'Create dataset'
@@ -74,7 +72,7 @@ function renderNavBar(navbarId, exampleUri) {
   const githubLink = document.createElement('a')
   githubLink.classList.add('waves-effect', 'waves-light', 'side-by-side')
   githubLink.id = 'github-link'
-  githubLink.href = 'https://github.com/justadudewhohacks/face-api.js'
+  githubLink.href = '#'
   const h5 = document.createElement('h5')
   h5.innerHTML = 'NeuraVision'
   githubLink.appendChild(h5)

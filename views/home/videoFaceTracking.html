@@ -137,69 +137,68 @@
     </span>
 
   
-
-  <script>
-    let forwardTimes = []
-    let withFaceLandmarks = false
-    let withBoxes = true
-
-    function onChangeWithFaceLandmarks(e) {
-      withFaceLandmarks = $(e.target).prop('checked')
-    }
-
-    function onChangeHideBoundingBoxes(e) {
-      withBoxes = !$(e.target).prop('checked')
-    }
-
-    function updateTimeStats(timeInMs) {
-      forwardTimes = [timeInMs].concat(forwardTimes).slice(0, 30)
-      const avgTimeInMs = forwardTimes.reduce((total, t) => total + t) / forwardTimes.length
-      $('#time').val(`${Math.round(avgTimeInMs)} ms`)
-      $('#fps').val(`${faceapi.round(1000 / avgTimeInMs)}`)
-    }
-
-    async function onPlay(videoEl) {
-      if(!videoEl.currentTime || videoEl.paused || videoEl.ended || !isFaceDetectionModelLoaded())
-        return setTimeout(() => onPlay(videoEl))
-
-
-      const options = getFaceDetectorOptions()
-
-      const ts = Date.now()
-
-      const faceDetectionTask = faceapi.detectAllFaces(videoEl, options)
-      const results = withFaceLandmarks
-        ? await faceDetectionTask.withFaceLandmarks()
-        : await faceDetectionTask
-
-      updateTimeStats(Date.now() - ts)
-
-      const drawFunction = withFaceLandmarks
-        ? drawLandmarks
-        : drawDetections
-
-      drawFunction(videoEl, $('#overlay').get(0), results, withBoxes)
-
-      setTimeout(() => onPlay(videoEl))
-    }
-
-    async function run() {
-      // load face detection and face landmark models
-      await changeFaceDetector(TINY_FACE_DETECTOR)
-      await faceapi.loadFaceLandmarkModel('/')
-      changeInputSize(416)
-
-      // start processing frames
-      onPlay($('#inputVideo').get(0))
-    }
-
-    function updateResults() {}
-
-    $(document).ready(function() {
-      renderNavBar('#navbar', 'video_face_tracking')
-      initFaceDetectionControls()
-      run()
-    })
-  </script>
+    <script>
+      let forwardTimes = []
+      let withFaceLandmarks = false
+      let withBoxes = true
+  
+      function onChangeWithFaceLandmarks(e) {
+        withFaceLandmarks = $(e.target).prop('checked')
+      }
+  
+      function onChangeHideBoundingBoxes(e) {
+        withBoxes = !$(e.target).prop('checked')
+      }
+  
+      function updateTimeStats(timeInMs) {
+        forwardTimes = [timeInMs].concat(forwardTimes).slice(0, 30)
+        const avgTimeInMs = forwardTimes.reduce((total, t) => total + t) / forwardTimes.length
+        $('#time').val(`${Math.round(avgTimeInMs)} ms`)
+        $('#fps').val(`${faceapi.round(1000 / avgTimeInMs)}`)
+      }
+  
+      async function onPlay(videoEl) {
+        if(!videoEl.currentTime || videoEl.paused || videoEl.ended || !isFaceDetectionModelLoaded())
+          return setTimeout(() => onPlay(videoEl))
+  
+  
+        const options = getFaceDetectorOptions()
+  
+        const ts = Date.now()
+  
+        const faceDetectionTask = faceapi.detectAllFaces(videoEl, options)
+        const results = withFaceLandmarks
+          ? await faceDetectionTask.withFaceLandmarks()
+          : await faceDetectionTask
+  
+        updateTimeStats(Date.now() - ts)
+  
+        const drawFunction = withFaceLandmarks
+          ? drawLandmarks
+          : drawDetections
+  
+        drawFunction(videoEl, $('#overlay').get(0), results, withBoxes)
+  
+        setTimeout(() => onPlay(videoEl))
+      }
+  
+      async function run() {
+        // load face detection and face landmark models
+        await changeFaceDetector(TINY_FACE_DETECTOR)
+        await faceapi.loadFaceLandmarkModel('/')
+        changeInputSize(416)
+  
+        // start processing frames
+        onPlay($('#inputVideo').get(0))
+      }
+  
+      function updateResults() {}
+  
+      $(document).ready(function() {
+        renderNavBar('#navbar', 'video_face_tracking')
+        initFaceDetectionControls()
+        run()
+      })
+    </script>
 </body>
 </html>
